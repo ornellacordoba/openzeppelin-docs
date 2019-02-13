@@ -1,0 +1,217 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Learn About Crowdsales · OpenZeppelin</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Learn About Crowdsales · OpenZeppelin"/><meta property="og:type" content="website"/><meta property="og:url" content="https://openzeppelin.org/api/index.html"/><meta property="og:description" content="Crowdsales are a popular use for Ethereum; they let you allocate tokens to network participants in various ways, mostly in exchange for Ether. They come in a variety of shapes and flavors, so let&#x27;s go over the various types available in OpenZeppelin and how to use them."/><link rel="shortcut icon" href="/api/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,700,400italic,700italic"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/api/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/api/"><img class="logo" src="/api/img/openzeppelin-logo.svg"/><h2 class="headerTitle">OpenZeppelin</h2></a><a href="/api/versions.html"><h3>2.1.1</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/api/docs/2.1.1/get-started.html" target="_self">Guides</a></li><li><a href="/api/docs/2.1.1/crowdsale_Crowdsale.html" target="_self">API Reference</a></li><li><a href="https://github.com/OpenZeppelin" target="_self">Github</a></li><li><a href="https://openzeppelin.org" target="_self">Website</a></li><li><a href="https://forum.zeppelin.solutions" target="_self">Forum</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>ABOUT</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>ABOUT</h3><ul><li class="navListItem"><a class="navItem" href="/api/docs/2.1.1/get-started.html">Get Started</a></li><li class="navListItem"><a class="navItem" href="/api/docs/2.1.1/learn-about-access-control.html">Learn About Access Control</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/api/docs/2.1.1/learn-about-crowdsales.html">Learn About Crowdsales</a></li><li class="navListItem"><a class="navItem" href="/api/docs/2.1.1/learn-about-tokens.html">Learn About Tokens</a></li><li class="navListItem"><a class="navItem" href="/api/docs/2.1.1/learn-about-utilities.html">Learn About Utilities</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Learn About Crowdsales</h1></header><article><div><span><p>Crowdsales are a popular use for Ethereum; they let you allocate tokens to network participants in various ways, mostly in exchange for Ether. They come in a variety of shapes and flavors, so let's go over the various types available in OpenZeppelin and how to use them.</p>
+<p>Crowdsales have a bunch of different properties, but here are some important ones:</p>
+<ul>
+<li>Price &amp; Rate Configuration
+<ul>
+<li>Does your crowdsale sell tokens at a fixed price?</li>
+<li>Does the price change over time or as a function of demand?</li>
+</ul></li>
+<li>Emission
+<ul>
+<li>How is this token actually sent to participants?</li>
+</ul></li>
+<li>Validation — Who is allowed to purchase tokens?
+<ul>
+<li>Are there KYC / AML checks?</li>
+<li>Is there a max cap on tokens?</li>
+<li>What if that cap is per-participant?</li>
+<li>Is there a starting and ending time frame?</li>
+</ul></li>
+<li>Distribution
+<ul>
+<li>Does distribution of funds happen in real-time or after the crowdsale?</li>
+<li>Can participants receive a refund if the goal is not met?</li>
+</ul></li>
+</ul>
+<p>To manage all of the different combinations and flavors of crowdsales, OpenZeppelin provides a highly configurable <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/crowdsale/Crowdsale.sol"><code>Crowdsale.sol</code></a> base contract that can be combined with various other functionalities to construct a bespoke crowdsale.</p>
+<h2><a class="anchor" aria-hidden="true" name="crowdsale-rate"></a><a href="#crowdsale-rate" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crowdsale Rate</h2>
+<p>Understanding the rate of a crowdsale is super important, and mistakes here are a common source of bugs.</p>
+<p>✨ <strong>HOLD UP FAM THIS IS IMPORTANT</strong> ✨</p>
+<p>Firstly, <strong>all currency math is done in the smallest unit of that currency and converted to the correct decimal places when <em>displaying</em> the currency</strong>.</p>
+<p>This means that when you do math in your smart contracts, you need to understand that you're adding, dividing, and multiplying the smallest amount of a currency (like wei), <em>not</em> the commonly-used displayed value of the currency (Ether).</p>
+<p>In Ether, the smallest unit of the currency is wei, and <code>1 ETH === 10^18 wei</code>. In tokens, the process is <em>very similar</em>: <code>1 TKN === 10^(decimals) TKNbits</code>.</p>
+<ul>
+<li>The smallest unit of a token is &quot;bits&quot; or <code>TKNbits</code>.</li>
+<li>The display value of a token is <code>TKN</code>, which is <code>TKNbits * 10^(decimals)</code></li>
+</ul>
+<p>What people usually call &quot;one token&quot; is actually a bunch of TKNbits, displayed to look like <code>1 TKN</code>. This is the same relationship that Ether and wei have. And what you're <em>always</em> doing calculations in is <strong>TKNbits and wei</strong>.</p>
+<p>So, if you want to issue someone &quot;one token for every 2 wei&quot; and your decimals are 18, your rate is <code>0.5e17</code>. Then, when I send you <code>2 wei</code>, your crowdsale issues me <code>2 * 0.5e17 TKNbits</code>, which is exactly equal to <code>10^18 TKNbits</code> and is displayed as <code>1 TKN</code>.</p>
+<p>If you want to issue someone &quot;<code>1 TKN</code> for every <code>1 ETH</code>&quot;, and your decimals are 18, your rate is <code>1</code>. This is because what's actually happening with the math is that the contract sees a user send <code>10^18 wei</code>, not <code>1 ETH</code>. Then it uses your rate of 1 to calculate <code>TKNbits = rate * wei</code>, or <code>1 * 10^18</code>, which is still <code>10^18</code>. And because your decimals are 18, this is displayed as <code>1 TKN</code>.</p>
+<p>One more for practice: if I want to issue &quot;1 TKN for every dollar (USD) in Ether&quot;, we would calculate it as follows:</p>
+<ul>
+<li>assume 1 ETH == $400</li>
+<li>therefore, 10^18 wei = $400</li>
+<li>therefore, 1 USD is <code>10^18 / 400</code>, or <code>2.5 * 10^15 wei</code></li>
+<li>we have a decimals of 18, so we'll use <code>10 ^ 18 TKNbits</code> instead of <code>1 TKN</code></li>
+<li>therefore, if the participant sends the crowdsale <code>2.5 * 10^15 wei</code> we should give them <code>10 ^ 18 TKNbits</code></li>
+<li>therefore the rate is <code>2.5 * 10^15 wei === 10^18 TKNbits</code>, or <code>1 wei = 400 TKNbits</code></li>
+<li>therefore, our rate is <code>400</code></li>
+</ul>
+<p>(this process is pretty straightforward when you keep 18 decimals, the same as Ether/wei)</p>
+<h2><a class="anchor" aria-hidden="true" name="token-emission"></a><a href="#token-emission" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Token Emission</h2>
+<p>One of the first decisions you have to make is &quot;how do I get these tokens to users?&quot;. This is usually done in one of three ways:</p>
+<ul>
+<li>(default) — The Crowdsale contract owns tokens and simply transfers tokens from its own ownership to users that purchase them.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/crowdsale/emission/MintedCrowdsale.sol">MintedCrowdsale</a> — The Crowdsale mints tokens when a purchase is made.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/crowdsale/emission/AllowanceCrowdsale.sol">AllowanceCrowdsale</a> — The Crowdsale is granted an allowance to another wallet (like a Multisig) that already owns the tokens to be sold in the crowdsale.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" name="default-emission"></a><a href="#default-emission" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Default Emission</h3>
+<p>In the default scenario, your crowdsale must own the tokens that are sold. You can send the crowdsale tokens through a variety of methods, but here's what it looks like in Solidity:</p>
+<pre><code class="hljs css solidity"><span class="hljs-selector-tag">IERC20</span>(tokenAddress)<span class="hljs-selector-class">.transfer</span>(CROWDSALE_ADDRESS, SOME_TOKEN_AMOUNT);
+</code></pre>
+<p>Then when you deploy your crowdsale, simply tell it about the token</p>
+<pre><code class="hljs css solidity"><span class="hljs-keyword">new</span> <span class="hljs-type">Crowdsale</span>(
+    <span class="hljs-number">1</span>,             <span class="hljs-comment">// rate in TKNbits</span>
+    MY_WALLET,     <span class="hljs-comment">// address where Ether is sent</span>
+    TOKEN_ADDRESS  <span class="hljs-comment">// the token contract address</span>
+);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="minted-crowdsale"></a><a href="#minted-crowdsale" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Minted Crowdsale</h3>
+<p>To use a <code>MintedCrowdsale</code>, your token must also be a <code>ERC20Mintable</code> token that the crowdsale has permission to mint from. This can look like:</p>
+<pre><code class="hljs css solidity">contract MyToken is ERC20, ERC20Mintable {
+    <span class="hljs-comment">// ... see "Learn About Tokens" for more info</span>
+}
+
+contract MyCrowdsale is Crowdsale, MintedCrowdsale {
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">
+        uint256 rate,    <span class="hljs-comment">// rate in TKNbits</span>
+        address wallet,
+        ERC20 token
+    </span>)
+        MintedCrowdsale(<span class="hljs-params"></span>)
+        Crowdsale(<span class="hljs-params">rate, wallet, token</span>)
+        public
+    {
+
+    }
+}
+
+contract MyCrowdsaleDeployer {
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params"></span>)
+        public
+    {
+        <span class="hljs-comment">// create a mintable token</span>
+        ERC20Mintable token = <span class="hljs-keyword">new</span> MyToken();
+
+        <span class="hljs-comment">// create the crowdsale and tell it about the token</span>
+        Crowdsale crowdsale = <span class="hljs-keyword">new</span> MyCrowdsale(
+            <span class="hljs-number">1</span>,               <span class="hljs-comment">// rate, still in TKNbits</span>
+            msg.sender,      <span class="hljs-comment">// send Ether to the deployer</span>
+            address(token)   <span class="hljs-comment">// the token</span>
+        );
+        <span class="hljs-comment">// transfer the minter role from this contract (the default)</span>
+        <span class="hljs-comment">// to the crowdsale, so it can mint tokens</span>
+        token.addMinter(address(crowdsale));
+        token.renounceMinter();
+    }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="allowancecrowdsale"></a><a href="#allowancecrowdsale" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>AllowanceCrowdsale</h3>
+<p>Use an <code>AllowanceCrowdsale</code> to send tokens from another wallet to the participants of the crowdsale. In order for this to work, the source wallet must give the crowdsale an allowance via the ERC20 <code>approve(...)</code> method.</p>
+<pre><code class="hljs css solidity">contract MyCrowdsale is AllowanceCrowdsale, Crowdsale {
+    constructor(
+        uint256 rate,
+        <span class="hljs-selector-tag">address</span> wallet,
+        ERC20 token,
+        <span class="hljs-selector-tag">address</span> tokenWallet  <span class="hljs-comment">// &lt;- new argument</span>
+    )
+        AllowanceCrowdsale(tokenWallet)  <span class="hljs-comment">// &lt;- used here</span>
+        Crowdsale(rate, wallet, token)
+        public
+    {
+
+    }
+}
+</code></pre>
+<p>Then after the crowdsale is created, don't forget to approve it to use your tokens!</p>
+<pre><code class="hljs css solidity">IERC<span class="hljs-number">20</span><span class="hljs-comment">(tokenAddress)</span>.approve<span class="hljs-comment">(CROWDALE_ADDRESS, SOME_TOKEN_AMOUNT)</span>;
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="validation"></a><a href="#validation" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Validation</h2>
+<p>There are a bunch of different validation requirements that your crowdsale might be a part of:</p>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/crowdsale/validation/CappedCrowdsale.sol">CappedCrowdsale</a> — adds a cap to your crowdsale, invalidating any purchases that would exceed that cap</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/crowdsale/validation/IndividuallyCappedCrowdsale.sol">IndividuallyCappedCrowdsale</a> — caps an individual's contributions.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/crowdsale/validation/WhitelistedCrowdsale.sol">WhitelistedCrowdsale</a> — only allow whitelisted participants to purchase tokens. this is useful for putting your KYC / AML whitelist on-chain!</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/crowdsale/validation/TimedCrowdsale.sol">TimedCrowdsale</a> — adds an <code>openingTime</code> and <code>closingTime</code> to your crowdsale</li>
+</ul>
+<p>Simply mix and match these crowdsale flavors to your heart's content:</p>
+<pre><code class="hljs css solidity">contract MyCrowdsale is CappedCrowdsale, TimedCrowdsale, Crowdsale {
+
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">
+        uint256 rate,         <span class="hljs-comment">// rate, in TKNbits</span>
+        address wallet,       <span class="hljs-comment">// wallet to send Ether</span>
+        ERC20 token,          <span class="hljs-comment">// the token</span>
+        uint256 cap,          <span class="hljs-comment">// total cap, in wei</span>
+        uint256 openingTime,  <span class="hljs-comment">// opening time in unix epoch seconds</span>
+        uint256 closingTime   <span class="hljs-comment">// closing time in unix epoch seconds</span>
+    </span>)
+        CappedCrowdsale(<span class="hljs-params">cap</span>)
+        TimedCrowdsale(<span class="hljs-params">openingTime, closingTime</span>)
+        Crowdsale(<span class="hljs-params">rate, wallet, token</span>)
+        public
+    {
+        <span class="hljs-comment">// nice, we just created a crowdsale that's only open</span>
+        <span class="hljs-comment">// for a certain amount of time</span>
+        <span class="hljs-comment">// and stops accepting contributions once it reaches `cap`</span>
+    }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="distribution"></a><a href="#distribution" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Distribution</h2>
+<p>There comes a time in every crowdsale's life where it must relinquish the tokens it's been entrusted with. It's your decision as to when that happens!</p>
+<p>The default behavior is to release tokens as participants purchase them, but sometimes that may not be desirable. For example, what if we want to give users a refund if we don't hit a minimum raised in the sale? Or, maybe we want to wait until after the sale is over before users can claim their tokens and start trading them, perhaps for compliance reasons?</p>
+<p>OpenZeppelin is here to make that easy!</p>
+<h3><a class="anchor" aria-hidden="true" name="postdeliverycrowdsale"></a><a href="#postdeliverycrowdsale" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PostDeliveryCrowdsale</h3>
+<p>The <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/crowdsale/distribution/PostDeliveryCrowdsale.sol">PostDeliveryCrowdsale</a>, as its name implies, distributes tokens after the crowdsale has finished, letting users call <code>withdrawTokens()</code> in order to claim the tokens they've purchased.</p>
+<pre><code class="hljs css solidity">contract MyCrowdsale is PostDeliveryCrowdsale, TimedCrowdsale, Crowdsale {
+
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">
+        uint256 rate,         <span class="hljs-comment">// rate, in TKNbits</span>
+        address wallet,       <span class="hljs-comment">// wallet to send Ether</span>
+        ERC20 token,          <span class="hljs-comment">// the token</span>
+        uint256 openingTime,  <span class="hljs-comment">// opening time in unix epoch seconds</span>
+        uint256 closingTime   <span class="hljs-comment">// closing time in unix epoch seconds</span>
+    </span>)
+        PostDeliveryCrowdsale(<span class="hljs-params"></span>)
+        TimedCrowdsale(<span class="hljs-params">startTime, closingTime</span>)
+        Crowdsale(<span class="hljs-params">rate, wallet, token</span>)
+        public
+    {
+        <span class="hljs-comment">// nice! this Crowdsale will keep all of the tokens until the end of the crowdsale</span>
+        <span class="hljs-comment">// and then users can `withdrawTokens()` to get the tokens they're owed</span>
+    }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="refundablecrowdsale"></a><a href="#refundablecrowdsale" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RefundableCrowdsale</h3>
+<p>The <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/crowdsale/distribution/RefundableCrowdsale.sol">RefundableCrowdsale</a> offers to refund users if a minimum goal is not reached. If the goal is not reached, the users can <code>claimRefund()</code> to get their Ether back.</p>
+<pre><code class="hljs css solidity">contract MyCrowdsale is RefundableCrowdsale, Crowdsale {
+
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">
+        uint256 rate,         <span class="hljs-comment">// rate, in TKNbits</span>
+        address wallet,       <span class="hljs-comment">// wallet to send Ether</span>
+        ERC20 token,          <span class="hljs-comment">// the token</span>
+        uint256 goal          <span class="hljs-comment">// the minimum goal, in wei</span>
+    </span>)
+        RefundableCrowdsale(<span class="hljs-params">goal</span>)
+        Crowdsale(<span class="hljs-params">rate, wallet, token</span>)
+        public
+    {
+        <span class="hljs-comment">// nice! this crowdsale will, if it doesn't hit `goal`, allow everyone to get their money back</span>
+        <span class="hljs-comment">// by calling claimRefund(...)</span>
+    }
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="learn-about-access-control.html">← Learn About Access Control</a><a class="docs-next button" href="learn-about-tokens.html">Learn About Tokens →</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5> <a href="/api/" class="">Docs</a></h5><a href="#">API Reference</a><a href="https://blog.zeppelin.solutions/guides/home">Guides</a></div><div><h5>Community</h5><a href="https://stackoverflow.com/search?q=open+zeppelin/" target="_blank">Stack Overflow</a><a href="https://forum.zeppelin.solutions/" target="_blank">Discuss in the forum</a></div><div><h5>More</h5><a href="https://blog.zeppelin.solutions">Blog</a><a href="https://github.com/OpenZeppelin/zeppelin-solidity">GitHub</a><a class="github-button" href="https://github.com/OpenZeppelin/zeppelin-solidity" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://openzeppelin.org" target="_blank" class="fbOpenSource"><img src="/api/img/openzeppelin-logo-footer.svg" alt="Open Zeppelin" width="170" height="45"/></a><section class="copyright">Copyright © 2019 <a href="https://zeppelin.solutions" target="_blank" class="fbOpenSource1">Zeppelin</a></section></footer></div><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-85043059-1', 'auto');
+              ga('send', 'pageview');
+            </script></body></html>

@@ -1,0 +1,114 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Learn About Tokens · OpenZeppelin</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Learn About Tokens · OpenZeppelin"/><meta property="og:type" content="website"/><meta property="og:url" content="https://openzeppelin.org/api/index.html"/><meta property="og:description" content="Ah, the &quot;token&quot;: the world&#x27;s most powerful and most misused tool. In this section we&#x27;ll learn to harness the power of native units of account for good and world peace!"/><link rel="shortcut icon" href="/api/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,700,400italic,700italic"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/api/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/api/"><img class="logo" src="/api/img/openzeppelin-logo.svg"/><h2 class="headerTitle">OpenZeppelin</h2></a><a href="/api/versions.html"><h3>2.1.1</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/api/docs/2.1.1/get-started.html" target="_self">Guides</a></li><li><a href="/api/docs/2.1.1/crowdsale_Crowdsale.html" target="_self">API Reference</a></li><li><a href="https://github.com/OpenZeppelin" target="_self">Github</a></li><li><a href="https://openzeppelin.org" target="_self">Website</a></li><li><a href="https://forum.zeppelin.solutions" target="_self">Forum</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>ABOUT</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>ABOUT</h3><ul><li class="navListItem"><a class="navItem" href="/api/docs/2.1.1/get-started.html">Get Started</a></li><li class="navListItem"><a class="navItem" href="/api/docs/2.1.1/learn-about-access-control.html">Learn About Access Control</a></li><li class="navListItem"><a class="navItem" href="/api/docs/2.1.1/learn-about-crowdsales.html">Learn About Crowdsales</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/api/docs/2.1.1/learn-about-tokens.html">Learn About Tokens</a></li><li class="navListItem"><a class="navItem" href="/api/docs/2.1.1/learn-about-utilities.html">Learn About Utilities</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Learn About Tokens</h1></header><article><div><span><p>Ah, the &quot;token&quot;: the world's most powerful and most misused tool. In this section we'll learn to harness the power of native units of account for good and world peace!</p>
+<h2><a class="anchor" aria-hidden="true" name="but-first-coffee-a-primer-on-tokens"></a><a href="#but-first-coffee-a-primer-on-tokens" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>But First, <del>Coffee</del> a Primer on Tokens</h2>
+<p>Simply put, a token <em>isn't anything special</em>. In Ethereum, pretty much <em>everything</em> is a contract, and that includes what we call tokens. &quot;Sending a token&quot; is the same as &quot;calling a method on a smart contract that someone wrote and deployed&quot;. And, at the end of the day, a token is just a mapping of addresses to balances and some nice methods to add and subtract from those balances.</p>
+<p>That's it! These balances could be considered money, or they could be voting rights or they could be experience points in your game.</p>
+<p>Even though the concept of a token is simple, they have a variety of complexities in the implementation. Because everything in Ethereum is just a smart contract, and there are no rules about what smart contracts have to do, the community has developed a variety of <strong>standards</strong> (called EIPs or ERCs) for documenting how a contract can interoperate with other contracts.</p>
+<p>You've probably heard of the <strong>ERC20</strong> standard, and that's why you're here.</p>
+<h2><a class="anchor" aria-hidden="true" name="erc20"></a><a href="#erc20" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ERC20</h2>
+<p>An ERC20 token is a contract that keeps track of a <code>mapping(address =&gt; uint256)</code> that represents a user's balance. These tokens are <em>fungible</em> in that any one token is exactly equal to any other token; no tokens have special rights or behavior associated with them. This makes ERC20 useful for things like a medium of exchange currency, general voting rights, staking, and more.</p>
+<p>OpenZeppelin provides a few different ERC20-related contracts. Here are the core contracts you'll almost definitely be using:</p>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/IERC20.sol">IERC20</a> — defines the interface that all ERC20 token implementations should conform to</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/ERC20.sol">ERC20</a> — the base implementation of the ERC20 interface</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/ERC20Detailed.sol">ERC20Detailed</a> — the <code>name()</code>, <code>symbol()</code>, and <code>decimals()</code> getters are optional in the original standard, so <code>ERC20Detailed</code> adds that information to your token.</li>
+</ul>
+<p>After that, OpenZeppelin provides a few extra properties that you may want depending on your use-case:</p>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/ERC20Mintable.sol">ERC20Mintable</a> — <code>ERC20Mintable</code> allows users with the <a href="/api/docs/learn-about-access-control.html"><code>MinterRole</code></a> to call the <code>mint()</code> function and mint tokens to users. Minting can also be finished, locking the <code>mint()</code> function's behavior.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/ERC20Burnable.sol">ERC20Burnable</a> — if your token can be burned (aka, it can be destroyed), include this one</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/ERC20Capped.sol">ERC20Capped</a> — <code>ERC20Capped</code> is a type of <code>ERC20Mintable</code> that enforces a maximum cap on tokens; this is really useful if you want to ensure network participants that there will always be a maximum number of tokens, and is useful for making sure that multiple different minting methods don't accidentally create more tokens than you expected.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/ERC20Pausable.sol">ERC20Pausable</a> — <code>ERC20Pausable</code> allows anyone with the Pauser role to pause the token, freezing transfers to and from users. This is useful if you want to stop trades until the end of a crowdsale, or if you want to have an emergency switch for freezing your tokens in the event of a large bug. Note that there are inherent decentralization tradeoffs when using a pausable token; users may not expect that their unstoppable money can be frozen by a single address!</li>
+</ul>
+<p>Finally, if you're working with ERC20 tokens, OpenZeppelin provides some utility contracts:</p>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/SafeERC20.sol">SafeERC20</a> — provides <code>safeTransfer</code>, <code>safeTransferFrom</code>, and <code>safeApprove</code> that are helpful wrappers around the normal ERC20 functions. Using <code>SafeERC20</code> forces transfers and approvals to succeed, or the entire transaction is reverted.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/TokenTimelock.sol">TokenTimelock</a> — is an escrow contract for ERC20 tokens that will release some tokens after a specified timeout. This is useful for simple vesting schedules like &quot;advisors get all of their tokens after 1 year&quot;. For a better vesting schedule, though, see <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/drafts/TokenVesting.sol"><code>TokenVesting</code></a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" name="constructing-a-nice-erc20-token"></a><a href="#constructing-a-nice-erc20-token" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constructing a Nice ERC20 Token</h3>
+<p>Now that we know what all of the contracts do (you should read the code! It's open source!), we can make our ERC20 token that will revolutionize dogsitting by reducing human beings to organic machines that act entirely based on rational monetary incentives, fueled by the DOGGO token.</p>
+<p>Here's what a good DOGGO token might look like.</p>
+<pre><code class="hljs css solidity">contract DoggoToken is ERC20, ERC20Detailed, ERC20Mintable, ERC20Burnable {
+
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">
+        <span class="hljs-built_in">string</span> name,
+        <span class="hljs-built_in">string</span> symbol,
+        uint8 decimals
+    </span>)
+        ERC20Burnable(<span class="hljs-params"></span>)
+        ERC20Mintable(<span class="hljs-params"></span>)
+        ERC20Detailed(<span class="hljs-params">name, symbol, decimals</span>)
+        ERC20(<span class="hljs-params"></span>)
+        public
+    {}
+}
+</code></pre>
+<p><code>ERC20Mintable</code> allows to add minters via <code>addMinter(addr)</code>, so they (like the DOGGO Network multisig) can mint tokens to the dogsitters in exchange for watching the nice doggos while their owners leave for vacation. The token is <code>ERC20Burnable</code> we want to have the ability to stake DOGGO tokens on our reputation—if the dogsitter does a bad job, their tokens get burned!</p>
+<h3><a class="anchor" aria-hidden="true" name="a-note-on-decimals"></a><a href="#a-note-on-decimals" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>A Note on <code>decimals</code></h3>
+<p>You might remember from the previous chapter about crowdsales about how math is performed in financial situations: <strong>all currency math is done in the smallest unit of that currency</strong>.</p>
+<p>That means that the <code>totalSupply</code> of a token is actually in what we call <code>TKNbits</code>, not what you see as <code>TKN</code>. So if my total supply is <code>1</code> and we have <code>5</code> decimals in the token, that's actually <code>1 TKNbit</code> and will be displayed as <code>0.00001 TKN</code>.</p>
+<p>You probably want to use a decimals of <code>18</code>, just like Ether, unless you have a special reason not to, so when you're minting tokens to people or transferring them around, you're actually sending the number <code>numTKN * 10^(decimals)</code>. So if I'm sending you <code>5</code> tokens using a token contract with 18 decimals, the method I'm executing actually looks like <code>transfer(yourAddress, 5 * 10^18)</code>.</p>
+<h2><a class="anchor" aria-hidden="true" name="erc721"></a><a href="#erc721" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ERC721</h2>
+<p>We've discussed how you can make a <em>fungible</em> token using ERC20, but what if not all tokens are alike? This comes up in situations like company stock; some stock is common stock and some stock is investor shares, etc. It also comes up in a bunch of other places like in-game items, time, property, and so on.</p>
+<p><a href="https://eips.ethereum.org/EIPS/eip-721">ERC721</a> is a standard for representing ownership that is <strong>non-fungible</strong> aka, each token has unique properties.</p>
+<p>Let's see what contracts OpenZeppelin provides for helping us work with ERC721:</p>
+<ul>
+<li>The <code>IERC721</code>, <code>IERC721Metadata</code>, <code>IERC721Enumerable</code> interfaces are part of the <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC721/IERC721.sol">IERC721.sol</a> file, which document the interfaces.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC721/ERC721.sol">ERC721</a> — is the full implementation of ERC721, and the contract you'll most likely be inheriting from.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC721/IERC721Receiver.sol">IERC721Receiver</a> — in some cases, it's beneficial to be 100% certain that a contract knows how to handle ERC721 tokens (imagine sending an in-game item to an exchange address that can't send it back!). When using <code>safeTransferFrom()</code>, the contract checks to see that the receiver is an <code>IERC721Receiver</code>, which implies that it knows how to handle ERC721 tokens. If you're writing a contract that accepts 721 tokens, you'll want to implement this interface.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC721/ERC721Mintable.sol">ERC721Mintable</a> — like the ERC20 version, ERC721Mintable allows addresses with the <code>Minter</code> role to mint tokens.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC721/ERC721Pausable.sol">ERC721Pausable</a> — like the ERC20 version, ERC721Pausable allows addresses with the <code>Pauser</code> role to freeze transfers of tokens.</li>
+</ul>
+<p>We'll use these contracts to tokenize the time of our dogsitters: when a dogsitter wants to sell an hour of their time to watch a dog, they can mint an ERC721 token that represents that hour slot and then sell this token on an exchange. Then they'll go to the owner's house at the right time to watch their doggos.</p>
+<p>Here's what tokenized dogsitter timeframes might look like:</p>
+<pre><code class="hljs css solidity">contract DoggoTime is ERC721Full {
+    using Counter <span class="hljs-keyword">for</span> Counter.Index;
+    Counter.Index <span class="hljs-keyword">private</span> tokenId;
+
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">
+        <span class="hljs-built_in">string</span> name,
+        <span class="hljs-built_in">string</span> symbol,
+    </span>)
+        ERC721Full(<span class="hljs-params">name, symbol</span>)
+        public
+    {}
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createDoggoTimeframe</span>(<span class="hljs-params">
+        <span class="hljs-built_in">string</span> tokenURI
+    </span>)
+        <span class="hljs-title">public</span>
+        <span class="hljs-title">returns</span> (<span class="hljs-params">bool</span>)
+    </span>{
+        uint256 doggoTokenId = tokenId.next();
+        _mint(msg.sender, doggoTokenId);
+        _setTokenURI(doggoTokenId, tokenURI);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+}
+</code></pre>
+<p>Now anyone who wants to sell their time in exchange for DOGGO tokens can call:</p>
+<pre><code class="hljs css solidity"><span class="hljs-function"><span class="hljs-title">DoggoTime</span><span class="hljs-params">(doggoTimeAddress)</span></span>.createDoggoTimeframe(<span class="hljs-string">"https://example.com/doggo.json"</span>)
+</code></pre>
+<p>where the tokenURI should resolve to a json document that might look something like:</p>
+<pre><code class="hljs css json">{
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Alex's DOGGO Dogsitting Time — 1 Hour on Thursday the 5th at 6pm"</span>,
+    <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Alex agrees to dog sit for 1 hour of her time on Thursday the 5th at 6pm."</span>,
+    <span class="hljs-attr">"image"</span>: <span class="hljs-string">"https://example.com/doggo-network.png"</span>
+}
+</code></pre>
+<p>For more information about tokenURI metadata, check out the <a href="https://eips.ethereum.org/EIPS/eip-721">finalized ERC721 spec</a>.</p>
+<p><em>Note: you'll also notice that the date information is included in the metadata, but that information isn't on-chain! So Alex the dogsitter could change the time and scam some people out of their money! If you'd like to put the dates of the dogsitting hours on-chain, you can extend ERC721 to do so. You could also leverage IPFS to pin the tokenURI information, which lets viewers know if Alex has changed the metadata associated with her tokens, but these techniques are out of the scope of this overview guide.</em></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="learn-about-crowdsales.html">← Learn About Crowdsales</a><a class="docs-next button" href="learn-about-utilities.html">Learn About Utilities →</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5> <a href="/api/" class="">Docs</a></h5><a href="#">API Reference</a><a href="https://blog.zeppelin.solutions/guides/home">Guides</a></div><div><h5>Community</h5><a href="https://stackoverflow.com/search?q=open+zeppelin/" target="_blank">Stack Overflow</a><a href="https://forum.zeppelin.solutions/" target="_blank">Discuss in the forum</a></div><div><h5>More</h5><a href="https://blog.zeppelin.solutions">Blog</a><a href="https://github.com/OpenZeppelin/zeppelin-solidity">GitHub</a><a class="github-button" href="https://github.com/OpenZeppelin/zeppelin-solidity" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://openzeppelin.org" target="_blank" class="fbOpenSource"><img src="/api/img/openzeppelin-logo-footer.svg" alt="Open Zeppelin" width="170" height="45"/></a><section class="copyright">Copyright © 2019 <a href="https://zeppelin.solutions" target="_blank" class="fbOpenSource1">Zeppelin</a></section></footer></div><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-85043059-1', 'auto');
+              ga('send', 'pageview');
+            </script></body></html>

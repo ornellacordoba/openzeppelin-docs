@@ -1,0 +1,92 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Learn About Utilities · OpenZeppelin</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Learn About Utilities · OpenZeppelin"/><meta property="og:type" content="website"/><meta property="og:url" content="https://openzeppelin.org/api/index.html"/><meta property="og:description" content="OpenZeppelin provides a ton of useful utilities that you can use in your project. Here are some of the more popular ones:"/><link rel="shortcut icon" href="/api/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,700,400italic,700italic"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/api/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/api/"><img class="logo" src="/api/img/openzeppelin-logo.svg"/><h2 class="headerTitle">OpenZeppelin</h2></a><a href="/api/versions.html"><h3>2.0.0-rc.2</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/api/docs/2.0.0-rc.2/get-started.html" target="_self">Guides</a></li><li><a href="/api/docs/2.0.0-rc.2/crowdsale_Crowdsale.html" target="_self">API Reference</a></li><li><a href="https://github.com/OpenZeppelin" target="_self">Github</a></li><li><a href="https://openzeppelin.org" target="_self">Website</a></li><li><a href="https://forum.zeppelin.solutions" target="_self">Forum</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>ABOUT</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>ABOUT</h3><ul><li class="navListItem"><a class="navItem" href="/api/docs/2.0.0-rc.2/get-started.html">Get Started</a></li><li class="navListItem"><a class="navItem" href="/api/docs/2.0.0-rc.2/learn-about-access-control.html">Learn About Access Control</a></li><li class="navListItem"><a class="navItem" href="/api/docs/2.0.0-rc.2/learn-about-crowdsales.html">Learn About Crowdsales</a></li><li class="navListItem"><a class="navItem" href="/api/docs/2.0.0-rc.2/learn-about-tokens.html">Learn About Tokens</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/api/docs/2.0.0-rc.2/learn-about-utilities.html">Learn About Utilities</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Learn About Utilities</h1></header><article><div><span><p>OpenZeppelin provides a ton of useful utilities that you can use in your project. Here are some of the more popular ones:</p>
+<h2><a class="anchor" aria-hidden="true" name="cryptography"></a><a href="#cryptography" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cryptography</h2>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/cryptography/ECDSA.sol">ECDSA.sol</a> — provides functions for recovering and managing Ethereum account ECDSA signatures:
+<ul>
+<li>to use it, declare: <code>using ECDSA for bytes32;</code></li>
+<li>signatures are tightly packed, 65 byte <code>bytes</code> that look like <code>{v (1)} {r (32)} {s (32)}</code>
+<ul>
+<li>this is the default from <code>web3.eth.sign</code> so you probably don't need to worry about this format</li>
+</ul></li>
+<li>recover the signer using <code>myDataHash.recover(signature)</code></li>
+<li>if you are using <code>eth_personalSign</code>, the signer will hash your data and then add the prefix <code>\x19Ethereum Signed Message:\n</code>, so if you're attempting to recover the signer of an Ethereum signed message hash, you'll want to use <code>toEthSignedMessageHash</code></li>
+</ul></li>
+</ul>
+<p>Use these functions in combination to verify that a user has signed some information on-chain:</p>
+<pre><code class="hljs css solidity"><span class="hljs-selector-tag">keccack256</span>(
+    <span class="hljs-selector-tag">abi</span><span class="hljs-selector-class">.encodePacked</span>(
+        <span class="hljs-selector-tag">someData</span>,
+        <span class="hljs-selector-tag">moreData</span>
+    )
+)
+<span class="hljs-selector-class">.toEthSignedMessageHash</span>()
+<span class="hljs-selector-class">.recover</span>(<span class="hljs-selector-tag">signature</span>)
+</code></pre>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/cryptography/MerkleProof.sol">MerkleProof.sol</a> — provides <code>verify(...)</code> for verifying merkle proofs.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" name="introspection"></a><a href="#introspection" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Introspection</h2>
+<p>In solidity, it's frequently helpful to know whether or not a contract supports an interface you'd like to use. ERC165 is a standard that helps do runtime interface detection. OpenZeppelin provides some helpers, both for implementing ERC165 in your contracts and querying other contracts:</p>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/introspection/IERC165.sol">IERC165</a> — this is the ERC165 interface that defines <code>supportsInterface(...)</code>. When implementing ERC615, you'll conform to this interface.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/introspection/SupportsInterfaceWithLookup.sol">ERC165</a> — inherit this contract if you'd like to support interface detection using a lookup table in contract storage. You can register interfaces using <code>_registerInterface(bytes4)</code>: check out example usage as part of the ERC721 implementation.</li>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/introspection/ERC165Checker.sol">ERC165Checker</a> — ERC165Checker simplifies the process of checking whether or not a contract supports an interface you care about.
+<ul>
+<li>include with <code>using ERC165Checker for address;</code></li>
+<li><code>myAddress.supportsInterface(bytes4)</code></li>
+<li><code>myAddress.supportsInterfaces(bytes4[])</code></li>
+</ul></li>
+</ul>
+<pre><code class="hljs css solidity">contract MyContract {
+    using ERC165Checker for <span class="hljs-keyword">address;
+</span>
+    <span class="hljs-keyword">bytes4 </span>private InterfaceId_ERC721 = <span class="hljs-number">0x80ac58cd</span><span class="hljs-comment">;</span>
+
+    <span class="hljs-comment">/**
+     * @dev transfer an ERC721 token from this contract to someone else
+     */</span>
+    function transferERC721(
+        <span class="hljs-keyword">address </span>token,
+        <span class="hljs-keyword">address </span>to,
+        uint256 tokenId
+    )
+        public
+    {
+        require(token.supportsInterface(InterfaceId_ERC721), <span class="hljs-string">"IS_NOT_721_TOKEN"</span>)<span class="hljs-comment">;</span>
+        IERC721(token).transferFrom(<span class="hljs-keyword">address(this), </span>to, tokenId)<span class="hljs-comment">;</span>
+    }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="math"></a><a href="#math" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Math</h2>
+<p>The most popular math related library OpenZeppelin provides is <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol">SafeMath</a>, which provides mathematical functions that protect your contract from overflows and underflows.</p>
+<p>Include the contract with <code>using SafeMath for uint256;</code> and then call the functions:</p>
+<ul>
+<li><code>myNumber.add(otherNumber)</code></li>
+<li><code>myNumber.sub(otherNumber)</code></li>
+<li><code>myNumber.div(otherNumber)</code></li>
+<li><code>myNumber.mul(otherNumber)</code></li>
+<li><code>myNumber.mod(otherNumber)</code></li>
+</ul>
+<p>Easy!</p>
+<h2><a class="anchor" aria-hidden="true" name="payment"></a><a href="#payment" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Payment</h2>
+<p>Want to split some payments between multiple people? Maybe you have an app that sends 30% of art purchases to the original creator and 70% of the profits to the current owner; you can build that with <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/payment/SplitPayment.sol"><code>SplitPayment</code></a>!.</p>
+<p>In solidity, there are some security concerns with blindly sending money to accounts, since it allows them to execute arbitrary code. You can read up on these security concerns in the <a href="https://consensys.github.io/smart-contract-best-practices/">Ethereum Smart Contract Best Practices</a> website. One of the ways to fix re-rentrancy and stalling problems is, instead of immediately sending Ether to accounts that need it, you can use <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/payment/PullPayment.sol"><code>PullPayment</code></a>, which offers an <code>asyncSend</code> function for sending money to something and requesting that they <code>withdraw()</code> it later.</p>
+<p>If you want to Escrow some funds, check out <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/payment/Escrow.sol"><code>Escrow</code></a> and <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/payment/ConditionalEscrow.sol"><code>ConditionalEscrow</code></a> for governing the release of some escrowed Ether.</p>
+<h3><a class="anchor" aria-hidden="true" name="misc"></a><a href="#misc" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Misc</h3>
+<p>Want to check if an address is a contract? Use <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/utils/Address.sol"><code>AddressUtils</code></a> and <code>AddressUtils#isContract()</code>.</p>
+<p>Want to keep track of some numbers that increment by 1 every time you want another one? Check out <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/utils/Counter.sol"><code>Counter</code></a>. This is especailly useful for creating incremental ERC721 tokenIds like we did in the last section.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="learn-about-tokens.html">← Learn About Tokens</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5> <a href="/api/" class="">Docs</a></h5><a href="#">API Reference</a><a href="https://blog.zeppelin.solutions/guides/home">Guides</a></div><div><h5>Community</h5><a href="https://stackoverflow.com/search?q=open+zeppelin/" target="_blank">Stack Overflow</a><a href="https://forum.zeppelin.solutions/" target="_blank">Discuss in the forum</a></div><div><h5>More</h5><a href="https://blog.zeppelin.solutions">Blog</a><a href="https://github.com/OpenZeppelin/zeppelin-solidity">GitHub</a><a class="github-button" href="https://github.com/OpenZeppelin/zeppelin-solidity" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://openzeppelin.org" target="_blank" class="fbOpenSource"><img src="/api/img/openzeppelin-logo-footer.svg" alt="Open Zeppelin" width="170" height="45"/></a><section class="copyright">Copyright © 2019 <a href="https://zeppelin.solutions" target="_blank" class="fbOpenSource1">Zeppelin</a></section></footer></div><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-85043059-1', 'auto');
+              ga('send', 'pageview');
+            </script></body></html>

@@ -1,0 +1,95 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Learn About Access Control · OpenZeppelin</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Learn About Access Control · OpenZeppelin"/><meta property="og:type" content="website"/><meta property="og:url" content="https://openzeppelin.org/api/index.html"/><meta property="og:description" content="Access control—that is, &quot;who is allowed to do this thing&quot;—is incredibly important in the world of smart contracts. The access control of your contract governs who can mint tokens, who can vote on proposals, who can [`selfdestruct()`](https://blog.zeppelin.solutions/on-the-parity-wallet-multisig-hack-405a8c12e8f7) the contract, and more, so it&#x27;s very important to understand how you implement it."/><link rel="shortcut icon" href="/api/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,700,400italic,700italic"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/api/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/api/"><img class="logo" src="/api/img/openzeppelin-logo.svg"/><h2 class="headerTitle">OpenZeppelin</h2></a><a href="/api/versions.html"><h3>next</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/api/docs/next/get-started.html" target="_self">Guides</a></li><li><a href="/api/docs/next/crowdsale_Crowdsale.html" target="_self">API Reference</a></li><li><a href="https://github.com/OpenZeppelin" target="_self">Github</a></li><li><a href="https://openzeppelin.org" target="_self">Website</a></li><li><a href="https://forum.zeppelin.solutions" target="_self">Forum</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>ABOUT</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>ABOUT</h3><ul><li class="navListItem"><a class="navItem" href="/api/docs/next/get-started.html">Get Started</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/api/docs/next/learn-about-access-control.html">Learn About Access Control</a></li><li class="navListItem"><a class="navItem" href="/api/docs/next/learn-about-crowdsales.html">Learn About Crowdsales</a></li><li class="navListItem"><a class="navItem" href="/api/docs/next/learn-about-tokens.html">Learn About Tokens</a></li><li class="navListItem"><a class="navItem" href="/api/docs/next/learn-about-utilities.html">Learn About Utilities</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Learn About Access Control</h1></header><article><div><span><p>Access control—that is, &quot;who is allowed to do this thing&quot;—is incredibly important in the world of smart contracts. The access control of your contract governs who can mint tokens, who can vote on proposals, who can <a href="https://blog.zeppelin.solutions/on-the-parity-wallet-multisig-hack-405a8c12e8f7"><code>selfdestruct()</code></a> the contract, and more, so it's very important to understand how you implement it.</p>
+<h2><a class="anchor" aria-hidden="true" name="ownership-ownablesol"></a><a href="#ownership-ownablesol" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ownership &amp; Ownable.sol</h2>
+<p>The most common and basic form of access control is the concept of <em>ownership</em>: there's one account that is the <code>owner</code> and can do administrative tasks on contracts. This approach is perfectly reasonable for contracts that only have a single administrative user.</p>
+<p>OpenZeppelin provides <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/ownership/Ownable.sol">contracts/ownership/Ownable.sol</a> for implementing ownership in your contracts.</p>
+<pre><code class="hljs css solidity"><span class="hljs-meta"><span class="hljs-meta-keyword">import</span> "openzeppelin-solidity/contracts/ownership/Ownable.sol";</span>
+
+contract MyContract <span class="hljs-keyword">is</span> Ownable {
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalThing</span><span class="hljs-params">()</span>
+        <span class="hljs-title">public</span>
+    </span>{
+        <span class="hljs-comment">// anyone can call this normalThing()</span>
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">specialThing</span><span class="hljs-params">()</span>
+        <span class="hljs-title">public</span>
+        <span class="hljs-title">onlyOwner</span>
+    </span>{
+        <span class="hljs-comment">// only the owner can call specialThing()!</span>
+    }
+}
+</code></pre>
+<p>By default, the <code>owner</code> of an <code>Ownable</code> contract is the <code>msg.sender</code> of the contract creation transaction, which is usually exactly what you want.</p>
+<p>Ownable also lets you:</p>
+<ul>
+<li><code>transferOwnership(address newOwner)</code> to transfer ownership from one account to another</li>
+<li><code>renounceOwnership()</code> to remove the owner altogether, useful for decentralizing control of your contract. <strong>⚠ Warning!</strong> Removing the owner altogether will mean that administrative tasks that are protected by <code>onlyOwner</code> will no longer be callable!</li>
+</ul>
+<p>Note that any contract that supports sending transactions can also be the owner of a contract; the only requirement is that the owner has an Ethereum address, so it could be a Gnosis Multisig or Gnosis Safe, an Aragon DAO, an ERC725/uPort identity contract, or a totally custom contract that <em>you</em> create.</p>
+<p>In this way you can use <em>composability</em> to add additional layers of access control complexity to your contracts. Instead of having a single Ethereum Off-Chain Account (EOA) as the owner, you can replace them with a 2/3 multisig run by your project leads, for example.</p>
+<h3><a class="anchor" aria-hidden="true" name="examples-in-openzeppelin"></a><a href="#examples-in-openzeppelin" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples in OpenZeppelin</h3>
+<p>You'll notice that none of the OpenZeppelin contracts use Ownable, though! This is because there are more flexible ways of providing access control that are more in-line with our reusable contract philosophy. For most contracts, We'll use <code>Roles</code> to govern who can do what. There are some cases, though—like with <code>Escrow</code>—where there's a direct relationship between contracts. In those cases, we'll use <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/ownership/Secondary.sol"><code>Secondary</code></a> to create a &quot;secondary&quot; contract that allows a &quot;primary&quot; contract to manage it.</p>
+<p>Let's learn about Role-Based Access Control!</p>
+<h2><a class="anchor" aria-hidden="true" name="role-based-access-control-rolessol"></a><a href="#role-based-access-control-rolessol" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Role-Based Access Control &amp; Roles.sol</h2>
+<p>An alternative to single-concern <code>Ownable</code> is role based access control (RBAC), which, instead of keeping track of a single entity with &quot;admin&quot; level privileges, keeps track of multiple different entities with a variety of roles that inform the contract about what they can do.</p>
+<p>For example, a <code>MintableToken</code> could have a <code>minter</code> role that decides who can mint tokens (which could be assigned to a Crowdsale). It could also have a <code>namer</code> role that allows changing the name or symbol of the token (for whatever reason). RBAC gives you much more flexibility over who can do what and is generally recommended for applications that need more configurability. If you're experienced with web development, the vast majority of access control systems are role-based: some users are normal users, some are moderators, and some can be company employee admins.</p>
+<p>OpenZeppelin provides <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/access/Roles.sol">contracts/access/Roles.sol</a> for implementing role-based access control.</p>
+<p>Here's an example of using <code>Roles</code> in our token example above, we'll use it to implement a token that can be minted by <code>Minters</code> and renamed by <code>Namers</code>:</p>
+<pre><code class="hljs css solidity"><span class="hljs-keyword">import</span> <span class="hljs-string">"openzeppelin-solidity/contracts/access/Roles.sol"</span>;
+
+contract MyToken is DetailedERC20, StandardToken {
+    using Roles <span class="hljs-keyword">for</span> Roles.Role;
+
+    Roles.Role <span class="hljs-keyword">private</span> minters;
+    Roles.Role <span class="hljs-keyword">private</span> namers;
+
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">
+        <span class="hljs-built_in">string</span> name,
+        <span class="hljs-built_in">string</span> symbol,
+        uint8 decimals,
+        address[] minters,
+        address[] namers,
+    </span>)
+        DetailedERC20(<span class="hljs-params">name, symbol, decimals</span>)
+        Standardtoken(<span class="hljs-params"></span>)
+        public
+    {
+        namers.addMany(namers);
+        minters.addMany(minters);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mint</span>(<span class="hljs-params">address to, uint256 amount</span>)
+        <span class="hljs-title">public</span>
+    </span>{
+        <span class="hljs-comment">// only allow minters to mint</span>
+        <span class="hljs-built_in">require</span>(minters.has(msg.sender), <span class="hljs-string">"DOES_NOT_HAVE_MINTER_ROLE"</span>);
+        _mint(to, amount);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">rename</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> name, <span class="hljs-built_in">string</span> symbol</span>)
+        <span class="hljs-title">public</span>
+    </span>{
+        <span class="hljs-comment">// only allow namers to name</span>
+        <span class="hljs-built_in">require</span>(namers.has(msg.sender), <span class="hljs-string">"DOES_NOT_HAVE_NAMER_ROLE"</span>);
+        name = name;
+        symbol = symbol;
+    }
+}
+</code></pre>
+<p>So clean! You'll notice that the role associations are always the last arguments in the constructor; this is a good pattern to follow to keep your code more organized.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="get-started.html">← Get Started</a><a class="docs-next button" href="learn-about-crowdsales.html">Learn About Crowdsales →</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5> <a href="/api/" class="">Docs</a></h5><a href="#">API Reference</a><a href="https://blog.zeppelin.solutions/guides/home">Guides</a></div><div><h5>Community</h5><a href="https://stackoverflow.com/search?q=open+zeppelin/" target="_blank">Stack Overflow</a><a href="https://forum.zeppelin.solutions/" target="_blank">Discuss in the forum</a></div><div><h5>More</h5><a href="https://blog.zeppelin.solutions">Blog</a><a href="https://github.com/OpenZeppelin/zeppelin-solidity">GitHub</a><a class="github-button" href="https://github.com/OpenZeppelin/zeppelin-solidity" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://openzeppelin.org" target="_blank" class="fbOpenSource"><img src="/api/img/openzeppelin-logo-footer.svg" alt="Open Zeppelin" width="170" height="45"/></a><section class="copyright">Copyright © 2019 <a href="https://zeppelin.solutions" target="_blank" class="fbOpenSource1">Zeppelin</a></section></footer></div><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-85043059-1', 'auto');
+              ga('send', 'pageview');
+            </script></body></html>
